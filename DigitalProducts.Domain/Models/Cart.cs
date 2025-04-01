@@ -4,7 +4,6 @@ namespace DigitalProducts.Domain.Models
 {
     public class Cart
     {
-
         public Guid Id { get; set; }
         public long UserId { get; set; }    
         public long ProductId { get; set; }
