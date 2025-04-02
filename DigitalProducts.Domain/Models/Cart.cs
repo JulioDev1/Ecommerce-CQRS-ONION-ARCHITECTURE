@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace DigitalProducts.Domain.Models
+﻿namespace DigitalProducts.Domain.Models
 {
     public class Cart
     {
@@ -9,5 +7,7 @@ namespace DigitalProducts.Domain.Models
         public long ProductId { get; set; }
         public DateTime CreateAt { get; set; }
         public required User User { get; set; }
+        public List<Product>? Products { get; set; } = [];
+        public List<CartProduct>? CartProducts { get; } = [];
     }
 }

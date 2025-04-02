@@ -1,8 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-using System.Data;
-using System.ComponentModel.DataAnnotations;
-
-namespace DigitalProducts.Domain.Models
+﻿namespace DigitalProducts.Domain.Models
 {
     public class User
     {

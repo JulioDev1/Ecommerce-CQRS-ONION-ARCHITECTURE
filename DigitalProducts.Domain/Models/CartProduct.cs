@@ -1,13 +1,11 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace DigitalProducts.Domain.Models
+﻿namespace DigitalProducts.Domain.Models
 {
     public class CartProduct
     {
         public long CartId { get; set; }
         public long ProductId { get; set; }
         public int Quantity { get; set; }  
-        public required Product product { get; set; }
-        public required Cart cart { get; set; }
+        public required Product Products { get; set; }
+        public required Cart Carts { get; set; }
     }
 }

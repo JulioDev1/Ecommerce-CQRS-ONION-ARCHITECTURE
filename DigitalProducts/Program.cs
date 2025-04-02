@@ -1,4 +1,4 @@
-using DigitalProducts.Infra.ContextDb;
+using DigitalProducts.Infra;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +18,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    if (context.Database.CanConnect())
+    {
+        Console.WriteLine("? Conexão com o banco de dados bem-sucedida!");
+    }
+    else
+    {
+        Console.WriteLine("? Erro ao conectar ao banco de dados!");
+    }
+}
+
 
 app.UseHttpsRedirection();
 
