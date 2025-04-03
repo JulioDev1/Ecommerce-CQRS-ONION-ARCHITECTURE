@@ -2,12 +2,11 @@
 {
     public class Cart
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public long UserId { get; set; }    
-        public long ProductId { get; set; }
         public DateTime CreateAt { get; set; }
         public required User User { get; set; }
-        public List<Product>? Products { get; set; } = [];
-        public List<CartProduct>? CartProducts { get; } = [];
+        public ICollection<Product>? Products { get; set; } = new List<Product>(); 
+        public ICollection<CartsProduct>? CartProducts { get; set; } = new List<CartsProduct>();
     }
 }

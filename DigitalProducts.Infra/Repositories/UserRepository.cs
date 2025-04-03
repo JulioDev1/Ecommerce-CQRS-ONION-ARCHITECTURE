@@ -1,4 +1,5 @@
 ﻿using DigitalProducts.Domain.Models;
+using DigitalProducts.Infra.Database;
 using DigitalProducts.Infra.Repositories.Interfaces;
 using DigitalProducts.Shared.Dtos;
 using Microsoft.EntityFrameworkCore;

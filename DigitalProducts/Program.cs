@@ -1,9 +1,9 @@
-using DigitalProducts.Infra;
 using DigitalProducts.Infra.Repositories;
 using DigitalProducts.Infra.Repositories.Interfaces;
 using DigitalProducts.Application;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using DigitalProducts.Infra.Database;
 
 
 var builder = WebApplication.CreateBuilder(args);
