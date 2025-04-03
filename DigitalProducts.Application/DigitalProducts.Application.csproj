@@ -7,8 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\" />
-    <Folder Include="HandlerQueries\" />
+    <Folder Include="Queries\CommandQuery\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DigitalProducts.Infra\DigitalProducts.Infra.csproj" />
   </ItemGroup>
 
 </Project>
