@@ -6,6 +6,8 @@ namespace DigitalProducts.Infra.Repositories.Interfaces
     public interface IUserRepositories
     {
         Task<long> CreateUser(UserDto userDto);
-        Task<bool> GetUserByEmail(string email);    
+        Task<bool> GetUserByEmail(string email);
+        Task<User?> FindUserByEmail(string email);
+
     }
 }

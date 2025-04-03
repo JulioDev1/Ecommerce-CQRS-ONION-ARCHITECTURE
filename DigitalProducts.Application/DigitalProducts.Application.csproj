@@ -11,10 +11,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
     <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.7.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DigitalProducts.Domain\DigitalProducts.Domain.csproj" />
     <ProjectReference Include="..\DigitalProducts.Infra\DigitalProducts.Infra.csproj" />
   </ItemGroup>
 

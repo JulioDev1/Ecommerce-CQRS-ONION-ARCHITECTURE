@@ -32,6 +32,11 @@ namespace DigitalProducts.Infra.Repositories
             return user.Id;
         }
 
+        public async Task<User?> FindUserByEmail(string email)
+        {
+            return await context.Users.FirstOrDefaultAsync(e => e.Email == email);
+        }
+
         public async Task<bool> GetUserByEmail(string email)
         {
             return await context.Users.AnyAsync(x => x.Email == email);

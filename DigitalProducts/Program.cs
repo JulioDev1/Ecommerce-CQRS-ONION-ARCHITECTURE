@@ -1,10 +1,10 @@
+using DigitalProducts.Application;
+using DigitalProducts.Application.Services;
+using DigitalProducts.Domain.Services;
+using DigitalProducts.Infra.Database;
 using DigitalProducts.Infra.Repositories;
 using DigitalProducts.Infra.Repositories.Interfaces;
-using DigitalProducts.Application;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
-using DigitalProducts.Infra.Database;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +19,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserRepositories, UserRepository>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IAuthenticateService, AuthService>();
 builder.Services.AddInjectionApplication();
 
 var app = builder.Build();
