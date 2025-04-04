@@ -14,8 +14,6 @@ namespace DigitalProducts.Application.Services
     {
         private readonly IUserRepositories userRepositories;
         private readonly IPasswordHasher passwordHasher;
-
-
         public AuthService(IUserRepositories userRepositories, IPasswordHasher passwordHasher)
         {
             this.userRepositories = userRepositories;
