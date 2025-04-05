@@ -20,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepositories, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IAuthenticateService, AuthService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddInjectionApplication();
 
 builder.Services.AddAuthentication(x =>
