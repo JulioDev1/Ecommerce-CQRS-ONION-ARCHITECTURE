@@ -22,7 +22,7 @@ namespace DigitalProducts.Controllers
 
                 var generateToken = authService.GenerateAuthToken(authUser!);
 
-                return Ok(generateToken);
+                return Ok(new { token = generateToken});
             }
             catch (UnauthorizedAccessException ex)
             {

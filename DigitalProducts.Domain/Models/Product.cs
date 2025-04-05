@@ -6,10 +6,11 @@
         public string Name {get; set;} = string.Empty;
         public decimal Price { get; set;}
         public string Description { get; set; } = string.Empty;
-	    public long TypeProductId { get; set; }
-        public long CreatorId { get; set; }
-        public required TypeProduct TypeProduct { get; set; }
-        public required User Creator { get; set; }
+        public string PathImage { get; set; } = string.Empty;
+	    public required long TypeProductId { get; set; }
+        public required long CreatorId { get; set; }
+        public  TypeProduct TypeProduct { get; set; }
+        public  User Creator { get; set; }
         public ICollection<Cart>? Carts { get; set; } = new List<Cart>();
         public ICollection<CartsProduct>? CartProducts { get; set; } = new List<CartsProduct>();
     }
