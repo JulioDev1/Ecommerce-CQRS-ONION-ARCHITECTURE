@@ -1,6 +1,9 @@
 ﻿using System.Security.Claims;
 using DigitalProducts.Application.Commands.Product.CreateProductHandler;
 using DigitalProducts.Application.Exceptions;
+using DigitalProducts.Application.Queries.Products.GetProductByAdmin;
+using DigitalProducts.Extensions;
+using DigitalProducts.Model;
 using DigitalProducts.Shared.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -46,6 +49,34 @@ namespace DigitalProducts.Controllers
             var response = await mediator.Send(command);
             
             return Ok(response);    
-        } 
+        }
+        [HttpGet("get-admin-products")]
+        public async Task<IActionResult> SelectProductAdmin([FromQuery] PaginationParams request)
+        {
+            var Id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var Email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+            if (Id is null || Email is null)
+            {
+                throw new UnauthorizedException("not logged");
+            }
+
+            var productParams = new GetProductsByAdminRequest
+            {
+                adminId = long.Parse(Id),
+                Email = Email,
+                pageNumber = request.PageNumber,
+                pageSize = request.PageSize,
+            };
+
+            var response = await mediator.Send(productParams);
+
+            Response.AddPaginationHeader(new PaginationHeader(response.CurrentPage, 
+                                                              response.PageSize,
+                                                              response.TotalItem,
+                                                              response.TotalPages));
+
+            return Ok(response);
+        }
     }
 }

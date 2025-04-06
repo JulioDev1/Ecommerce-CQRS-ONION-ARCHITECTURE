@@ -15,8 +15,8 @@ namespace DigitalProducts.Infra.Database
         {
             modelBuilder.Entity<Product>()
                .HasOne(p => p.TypeProduct)
-               .WithOne(tp => tp.Product)
-               .HasForeignKey<Product>(p => p.TypeProductId)
+               .WithMany(tp => tp.Product)
+               .HasForeignKey(p => p.TypeProductId)
                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Cart>()
