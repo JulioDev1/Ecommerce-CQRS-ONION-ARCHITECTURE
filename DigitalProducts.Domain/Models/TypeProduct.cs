@@ -4,7 +4,7 @@
     {
         public long Id { get; set; }
         public string productType { get; set; } = string.Empty;
-        public Product? Product { get; set; }
+        public ICollection<Product>? Product { get; set; } = new List<Product>();
 
     }
 }
