@@ -13,7 +13,7 @@
         public required long CreatorId { get; set; }
         public  User Creator { get; set; }
         public ICollection<Cart>? Carts { get; set; } = new List<Cart>();
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<CartsProduct>? CartProducts { get; set; } = new List<CartsProduct>();
     }
 }
