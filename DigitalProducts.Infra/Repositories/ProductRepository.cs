@@ -26,6 +26,7 @@ namespace DigitalProducts.Infra.Repositories
                 Price = product.Price,
                 CreatorId = product.CreatorId,
                 TypeProductId = product.TypeProductId,
+                Quantity = product.Quantity,
             };
 
             context.Products.Add(newProduct);
@@ -51,11 +52,14 @@ namespace DigitalProducts.Infra.Repositories
 
             ).Where(tp => tp.Product.Id == get.productId && tp.Product.CreatorId == get.adminId)
             .Select(product => new AdminProductsDto(
+                   product.Product.Id,
+                   product.Product.Quantity,
                    product.Product.Name,
                    product.Product.Price,
                    product.Product.Description,
                    product.Product.CreatorId,
-                   product.TypeProduct.productType
+                   product.TypeProduct.productType,
+                   product.Product.CreatedAt.ToString("dd/mm/yyyy")
             )).FirstOrDefaultAsync();
         }
 
@@ -71,11 +75,14 @@ namespace DigitalProducts.Infra.Repositories
                 ).Where(tp => tp.Product.CreatorId == adminId)
                 .Select(
                     product => new AdminProductsDto(
-                               product.Product.Name,
-                               product.Product.Price,
-                               product.Product.Description,
-                               product.Product.CreatorId,
-                               product.TypeProduct.productType
+                        product.Product.Id,
+                        product.Product.Quantity,
+                        product.Product.Name,
+                        product.Product.Price,
+                        product.Product.Description,
+                        product.Product.CreatorId,
+                        product.TypeProduct.productType,
+                        product.Product.CreatedAt.ToString("dd/mm/yyyy")
 
                     )
                 ).AsQueryable();

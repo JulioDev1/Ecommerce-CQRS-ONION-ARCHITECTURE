@@ -19,6 +19,7 @@
         public string Name { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public string Description { get; set; } = string.Empty;
+        public long Quantity { get; set; }
         public long CreatorId { get; set; }
         public string PathImage { get; set; } = string.Empty;
         public long TypeProductId { get; set; }
