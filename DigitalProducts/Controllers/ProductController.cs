@@ -2,6 +2,7 @@
 using DigitalProducts.Application.Commands.Product.CreateProductHandler;
 using DigitalProducts.Application.Exceptions;
 using DigitalProducts.Application.Queries.Products.GetProductByAdmin;
+using DigitalProducts.Application.Queries.Products.GetProductById;
 using DigitalProducts.Extensions;
 using DigitalProducts.Model;
 using DigitalProducts.Shared.Dtos;
@@ -50,6 +51,20 @@ namespace DigitalProducts.Controllers
             
             return Ok(response);    
         }
+        [HttpGet("get-product-by-id")]
+        public async Task<IActionResult> SelectProductById([FromQuery] GetProductDto dto)
+        {
+            var SelectedProduct = new GetProductRequest
+            {
+                adminId = dto.adminId,
+                productId = dto.productId,
+            };
+
+            var response = await mediator.Send(SelectedProduct);
+            
+            return Ok(response);
+        }
+
         [HttpGet("get-admin-products")]
         public async Task<IActionResult> SelectProductAdmin([FromQuery] PaginationParams request)
         {

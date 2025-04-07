@@ -25,14 +25,38 @@ namespace DigitalProducts.Infra.Repositories
                 PathImage = product.PathImage,
                 Price = product.Price,
                 CreatorId = product.CreatorId,
-                TypeProductId = product.TypeProductId,  
+                TypeProductId = product.TypeProductId,
             };
 
             context.Products.Add(newProduct);
 
             await context.SaveChangesAsync();
-            
+
             return newProduct.Id;
+        }
+
+        public async Task DeleteProductAdminById(GetProductDto get)
+        {
+            context.Products.Where(p => p.Id == get.productId && p.CreatorId == get.adminId).ExecuteDelete();
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<AdminProductsDto?> GetProductsById(GetProductDto get)
+        {
+            return await context.Products.Join(
+                        context.TypeProducts,
+                        products => products.TypeProductId,
+                        typeProduct => typeProduct.Id,
+                        (products, typeProduct) => new { Product = products, TypeProduct = typeProduct }
+
+            ).Where(tp => tp.Product.Id == get.productId && tp.Product.CreatorId == get.adminId)
+            .Select(product => new AdminProductsDto(
+                   product.Product.Name,
+                   product.Product.Price,
+                   product.Product.Description,
+                   product.Product.CreatorId,
+                   product.TypeProduct.productType
+            )).FirstOrDefaultAsync();
         }
 
         public async Task<PagedList<AdminProductsDto>> SelectAdminProduct(long adminId, int pageNumber, int pageSize)
@@ -56,7 +80,8 @@ namespace DigitalProducts.Infra.Repositories
                     )
                 ).AsQueryable();
 
-            return await PaginationHelper.CreateAsync(query, pageSize,pageNumber);
+            return await PaginationHelper.CreateAsync(query, pageSize, pageNumber);
         }
+
     }
 }

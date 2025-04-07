@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DigitalProducts.Shared.Dtos;
+﻿using DigitalProducts.Shared.Dtos;
 using MediatR;
 
 namespace DigitalProducts.Application.Commands.Product.CreateProductHandler
