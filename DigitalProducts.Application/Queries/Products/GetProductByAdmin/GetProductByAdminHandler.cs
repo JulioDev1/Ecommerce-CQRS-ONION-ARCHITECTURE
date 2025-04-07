@@ -1,5 +1,4 @@
 ﻿using DigitalProducts.Application.Queries.User.GetUserByEmail;
-using DigitalProducts.Domain.Models;
 using DigitalProducts.Domain.Pagination;
 using DigitalProducts.Infra.Repositories.Interfaces;
 using DigitalProducts.Shared.Dtos;
