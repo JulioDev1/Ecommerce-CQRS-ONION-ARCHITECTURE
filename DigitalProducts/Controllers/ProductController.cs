@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using DigitalProducts.Application.Commands.Product.CreateProductHandler;
+using DigitalProducts.Application.Commands.Product.DeleteProductHandler;
 using DigitalProducts.Application.Exceptions;
 using DigitalProducts.Application.Queries.Products.GetProductByAdmin;
 using DigitalProducts.Application.Queries.Products.GetProductById;
@@ -64,7 +65,27 @@ namespace DigitalProducts.Controllers
             
             return Ok(response);
         }
+        [HttpDelete("delete-product-by-id")]
+        [Authorize]
+        public async Task DeleteProduct([FromQuery] long productId)
+        {
+            var Id = User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.NameIdentifier)?.Value;
+            
+            if(Id is null)
+            {
+                throw new UnauthorizedException("not logged");
 
+            }
+
+            var deleteProductByAdmin = new DeleteProductRequest
+            {
+
+                AdminId = long.Parse(Id),
+                ProductId  = productId
+            };
+
+            await mediator.Send(deleteProductByAdmin);
+        }
         [HttpGet("get-admin-products")]
         public async Task<IActionResult> SelectProductAdmin([FromQuery] PaginationParams request)
         {
