@@ -1,4 +1,7 @@
-﻿using DigitalProducts.Application.Commands.User.CreateUserHandler;
+﻿using System.Security.Claims;
+using DigitalProducts.Application.Commands.User.CreateUserHandler;
+using DigitalProducts.Application.Exceptions;
+using DigitalProducts.Application.Queries.User.GetUserByEmail;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +22,22 @@ namespace DigitalProducts.Controllers
         {
             var response = await mediator.Send(command);
             
+            return Ok(response);
+        }
+        [HttpGet("get-user")]
+        public async Task<ActionResult> GetUserByEmail()
+        {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+            if (userEmail is null)
+            {
+                throw new UnauthorizedException("not logged");
+            }
+
+            var user = new GetUserByEmailRequest(userEmail);
+
+            var response = await mediator.Send(user);
+
             return Ok(response);
         }
     }
