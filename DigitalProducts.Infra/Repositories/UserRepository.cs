@@ -3,6 +3,7 @@ using DigitalProducts.Infra.Database;
 using DigitalProducts.Infra.Repositories.Interfaces;
 using DigitalProducts.Shared.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DigitalProducts.Infra.Repositories
 {
@@ -17,19 +18,42 @@ namespace DigitalProducts.Infra.Repositories
 
         public async Task<long> CreateUser(UserDto userDto)
         {
-            var user = new User
+            using var transaction = await context.Database.BeginTransactionAsync();
+            try
             {
-                Email = userDto.Email,
-                Name = userDto.Name,
-                Password = userDto.Password,
-                role = (User.Role)userDto.Role
-            };
 
-            context.Users.Add(user);
+                var user = new User
+                {
+                    Email = userDto.Email,
+                    Name = userDto.Name,
+                    Password = userDto.Password,
+                    role = (User.Role)userDto.Role
+                };
 
-            await context.SaveChangesAsync();
+                context.Users.Add(user);
 
-            return user.Id;
+                await context.SaveChangesAsync();
+
+                var cart = new Cart
+                {
+                    UserId = user.Id,
+                    CreateAt = DateTime.UtcNow,
+
+                };
+
+                context.Carts.Add(cart);
+
+                await context.SaveChangesAsync();
+
+                await transaction.CommitAsync(); 
+                
+                return user.Id;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<User?> FindUserByEmail(string email)
@@ -41,5 +65,6 @@ namespace DigitalProducts.Infra.Repositories
         {
             return await context.Users.AnyAsync(x => x.Email == email);
         }
+
     }
 }
