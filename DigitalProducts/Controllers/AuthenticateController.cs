@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DigitalProducts.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AuthenticateController : ControllerBase
     {
         private readonly IAuthenticateService authService;

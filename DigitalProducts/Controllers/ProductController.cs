@@ -112,7 +112,7 @@ namespace DigitalProducts.Controllers
                                                               response.TotalItem,
                                                               response.TotalPages));
 
-            return Ok(response);
+            return Ok(new {response, response.TotalItem});
         }
     }
 }

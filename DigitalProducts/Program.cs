@@ -40,7 +40,18 @@ builder.Services.AddAuthentication(x =>
         ValidateIssuer = false,
     };
 });
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "ReactApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+            .AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        }
+    );
+});
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -83,6 +94,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("ReactApp");
 
 app.UseHttpsRedirection();
 
