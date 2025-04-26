@@ -21,7 +21,6 @@ namespace DigitalProducts.Infra.Repositories
             using var transaction = await context.Database.BeginTransactionAsync();
             try
             {
-
                 var user = new User
                 {
                     Email = userDto.Email,

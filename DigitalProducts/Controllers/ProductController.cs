@@ -65,6 +65,8 @@ namespace DigitalProducts.Controllers
             
             return Ok(response);
         }
+
+
         [HttpDelete("delete-product-by-id")]
         [Authorize]
         public async Task DeleteProduct([FromQuery] long productId)
