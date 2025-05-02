@@ -32,15 +32,9 @@ namespace DigitalProducts.Infra.Repositories
 
         public async Task<long> GetUserCart(long userId)
         {
-            return await context.Carts.Join(
-                context.Users,
-                carts => carts.UserId,
-                users => users.Cart.Id,
-                (carts, users) => new { Cart = carts, User = users }
-                ).Where(c => c.Cart.UserId == userId)
-                .Select(
-                    c => c.Cart.Id
-                ).FirstAsync();
+            return await context.Carts.
+                Where(c => c.UserId == userId)
+                .Select(c => c.Id).FirstAsync();
         }
 
         public async Task ProductQuantityIncrease(long cartId, long productId)
@@ -79,7 +73,7 @@ namespace DigitalProducts.Infra.Repositories
                     )
                 ).AsQueryable();
 
-            return await PaginationHelper.CreateAsync(query,  pageNumber, pageSize);
+            return await PaginationHelper.CreateAsync(query,  pageSize, pageNumber);
         }
 
         public async Task RemoveProductToCart(long cartId, long productId)

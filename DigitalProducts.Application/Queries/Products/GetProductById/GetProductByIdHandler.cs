@@ -18,8 +18,8 @@ namespace DigitalProducts.Application.Queries.Products.GetProductById
                 new GetProductDto { 
                     adminId = request.adminId, 
                     productId= request.productId 
-                }
-            ;
+                };
+
             return await productRepository.GetProductsById(queryProducts);
         }
     }

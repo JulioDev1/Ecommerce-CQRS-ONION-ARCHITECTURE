@@ -3,7 +3,8 @@ using MediatR;
 
 namespace DigitalProducts.Application.Commands.Cart.ProductCart
 {
-    public class ProductCartHandler : IRequestHandler<ProductCartRequest, ProductCartResponse>
+    public class ProductCartHandler : 
+        IRequestHandler<ProductCartRequest, ProductCartResponse>
     {
         private readonly ICartRepository cartRepository;
         public ProductCartHandler(ICartRepository cartRepository)
