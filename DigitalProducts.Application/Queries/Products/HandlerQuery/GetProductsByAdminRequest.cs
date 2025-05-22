@@ -2,13 +2,13 @@
 using DigitalProducts.Shared.Dtos;
 using MediatR;
 
-namespace DigitalProducts.Application.Queries.Products.GetProductByAdmin
+namespace DigitalProducts.Application.Queries.Products.HandlerQuery
 {
     public class GetProductsByAdminRequest : IRequest<PagedList<AdminProductsDto>>
     {
-        public long adminId { get; set; }
-        public int pageNumber { get; set; } 
-        public int pageSize { get; set; }
+        public long AdminId { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
         public string Email { get; set; }
         public bool VerifyRole(UserDto.RoleUser user)
         {

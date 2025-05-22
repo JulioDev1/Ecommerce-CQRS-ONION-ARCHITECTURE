@@ -1,5 +1,4 @@
-﻿using System.Xml.Linq;
-using DigitalProducts.Application.Exceptions;
+﻿using DigitalProducts.Application.Exceptions;
 using DigitalProducts.Infra.Repositories.Interfaces;
 using DigitalProducts.Shared.Dtos;
 using MediatR;

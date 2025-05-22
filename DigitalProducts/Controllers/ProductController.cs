@@ -2,8 +2,8 @@
 using DigitalProducts.Application.Commands.Product.CreateProductHandler;
 using DigitalProducts.Application.Commands.Product.DeleteProductHandler;
 using DigitalProducts.Application.Exceptions;
-using DigitalProducts.Application.Queries.Products.GetProductByAdmin;
 using DigitalProducts.Application.Queries.Products.GetProductById;
+using DigitalProducts.Application.Queries.Products.HandlerQuery;
 using DigitalProducts.Extensions;
 using DigitalProducts.Model;
 using DigitalProducts.Shared.Dtos;
@@ -29,7 +29,7 @@ namespace DigitalProducts.Controllers
         public async Task<IActionResult> CreateProduct([FromBody] ProductDto productDto)
         {
 
-            var Id = User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var Id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
             if (Id is null || email is null)
@@ -49,8 +49,8 @@ namespace DigitalProducts.Controllers
             };
 
             var response = await mediator.Send(command);
-            
-            return Ok(response);    
+
+            return Ok(response);
         }
         [HttpGet("get-product-by-id")]
         public async Task<IActionResult> SelectProductById([FromQuery] GetProductDto dto)
@@ -62,7 +62,7 @@ namespace DigitalProducts.Controllers
             };
 
             var response = await mediator.Send(SelectedProduct);
-            
+
             return Ok(response);
         }
 
@@ -71,22 +71,48 @@ namespace DigitalProducts.Controllers
         [Authorize]
         public async Task DeleteProduct([FromQuery] long productId)
         {
-            var Id = User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.NameIdentifier)?.Value;
-            
-            if(Id is null)
-            {
-                throw new UnauthorizedException("not logged");
+            var Id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            }
+            if (Id is null) throw new UnauthorizedException("not logged");
 
             var deleteProductByAdmin = new DeleteProductRequest
             {
 
                 AdminId = long.Parse(Id),
-                ProductId  = productId
+                ProductId = productId
             };
 
             await mediator.Send(deleteProductByAdmin);
+        }
+
+
+        [HttpGet("all-product-filter")]
+        [Authorize]
+        public async Task<IActionResult> AllProductFilter([FromQuery] AllProductsHandlers allProductsHandlers)
+        {
+            var Id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (Id is null) throw new UnauthorizedException("not logged");
+
+            var products = new AllProductsHandlers
+            {
+                MaxPrice = allProductsHandlers.MaxPrice,
+                MinPrice = allProductsHandlers.MinPrice,
+                TypeProduct = allProductsHandlers.TypeProduct,
+                PageSize = allProductsHandlers.PageSize,
+                PageNumber = allProductsHandlers.PageNumber
+            };
+
+            var response = await mediator.Send(products);
+
+            Response.AddPaginationHeader(new PaginationHeader(
+                response.CurrentPage,
+                response.PageSize,
+                response.TotalItem,
+                response.TotalPages
+            ));
+
+            return Ok(new { response, response.TotalItem });
         }
         [HttpGet("get-admin-products")]
         public async Task<IActionResult> SelectProductAdmin([FromQuery] PaginationParams request)
@@ -101,20 +127,20 @@ namespace DigitalProducts.Controllers
 
             var productParams = new GetProductsByAdminRequest
             {
-                adminId = long.Parse(Id),
+                AdminId = long.Parse(Id),
                 Email = Email,
-                pageNumber = request.PageNumber,
-                pageSize = request.PageSize,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
             };
 
             var response = await mediator.Send(productParams);
 
-            Response.AddPaginationHeader(new PaginationHeader(response.CurrentPage, 
+            Response.AddPaginationHeader(new PaginationHeader(response.CurrentPage,
                                                               response.PageSize,
                                                               response.TotalItem,
                                                               response.TotalPages));
 
-            return Ok(new {response, response.TotalItem});
+            return Ok(new { response, response.TotalItem });
         }
     }
 }

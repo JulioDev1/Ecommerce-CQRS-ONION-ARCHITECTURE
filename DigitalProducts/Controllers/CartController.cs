@@ -44,10 +44,8 @@ namespace DigitalProducts.Controllers
             var Id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var Email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
-            if (Id is null || Email is null)
-            {
-                throw new UnauthorizedException("not logged");
-            }
+            if (Id is null || Email is null) throw new UnauthorizedException("not logged");
+      
 
             var cartProduct = new ProductsUserCartRequest(long.Parse(Id), request.PageNumber, request.PageSize);
 
@@ -72,7 +70,6 @@ namespace DigitalProducts.Controllers
             var response = await mediator.Send(userCart);
 
             return Ok(new { id = response });
-
         }
     }
 }
