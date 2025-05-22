@@ -29,10 +29,8 @@ namespace DigitalProducts.Controllers
         {
             var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
-            if (userEmail is null)
-            {
-                throw new UnauthorizedException("not logged");
-            }
+            if (userEmail is null) throw new UnauthorizedException("not logged");
+            
 
             var user = new GetUserByEmailRequest(userEmail);
 

@@ -73,7 +73,7 @@ namespace DigitalProducts.Infra.Repositories
                     )
                 ).AsQueryable();
 
-            return await PaginationHelper.CreateAsync(query,  pageSize, pageNumber);
+            return await PaginationHelper.CreateAsync(query, pageSize, pageNumber);
         }
 
         public async Task RemoveProductToCart(long cartId, long productId)

@@ -3,7 +3,6 @@ using DigitalProducts.Domain.Pagination;
 using DigitalProducts.Infra.Repositories.Interfaces;
 using DigitalProducts.Shared.Dtos;
 using MediatR;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 
 namespace DigitalProducts.Application.Queries.Cart.ProductCart
 {
@@ -26,7 +25,6 @@ namespace DigitalProducts.Application.Queries.Cart.ProductCart
             var response = await cartRepository.ProductsUserCart(userCart , request.pageNumber, request.pageSize);
 
             return response;
-
         }
         public async Task<long> Handle(GetUserCartRequest request, CancellationToken cancellationToken)
         {

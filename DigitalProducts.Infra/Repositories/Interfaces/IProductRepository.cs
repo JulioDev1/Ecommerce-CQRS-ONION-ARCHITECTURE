@@ -10,5 +10,6 @@ namespace DigitalProducts.Infra.Repositories.Interfaces
         Task<PagedList<AdminProductsDto>> SelectAdminProduct(long adminId, int pageNumber, int pageSize);
         Task DeleteProductAdminById(GetProductDto get);
         Task<AdminProductsDto?> GetProductsById(GetProductDto get);
+        Task<PagedList<AllProductsFiltered>> AllProducts(FilterPagedDto filterPagedDto);
     }
 }

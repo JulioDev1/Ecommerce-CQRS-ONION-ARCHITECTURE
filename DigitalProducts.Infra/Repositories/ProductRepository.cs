@@ -1,4 +1,6 @@
-﻿using DigitalProducts.Domain.Models;
+﻿using System.Diagnostics;
+using System.Xml.Linq;
+using DigitalProducts.Domain.Models;
 using DigitalProducts.Domain.Pagination;
 using DigitalProducts.Infra.Database;
 using DigitalProducts.Infra.Helper;
@@ -40,6 +42,41 @@ namespace DigitalProducts.Infra.Repositories
         {
             context.Products.Where(p => p.Id == get.productId && p.CreatorId == get.adminId).ExecuteDelete();
             await context.SaveChangesAsync();
+        }
+
+        private IQueryable<AllProductsFiltered> FilterProducts(FilterProductDto filterProduct)
+        {
+            var query = context.Products.Include(x=> x.TypeProduct).AsQueryable();
+
+            if (!string.IsNullOrEmpty(filterProduct.typeProduct))
+            {
+                query = query.Where(p=> p.TypeProduct.productType.Equals(filterProduct.typeProduct));
+            }
+            if (filterProduct.minPrice.HasValue)
+            {
+                query = query.Where(p=> p.Price >= filterProduct.minPrice.Value);
+            }
+            if (filterProduct.maxPrice.HasValue) 
+            {
+                query = query.Where(p=> p.Price <= filterProduct.maxPrice.Value);   
+            }
+
+            return query.Select(p => new AllProductsFiltered(
+                p.Id,
+                p.Name,
+                p.Quantity,
+                p.CreatorId,
+                p.CreatedAt,
+                p.Price,
+                p.Description,
+                p.TypeProduct.productType
+            ));
+        }
+        public async Task<PagedList<AllProductsFiltered>> AllProducts(FilterPagedDto filterPagedDto)
+        {
+            var filteredPagedProduct = FilterProducts(filterPagedDto.FilterProductDto);
+
+            return await PaginationHelper.CreateAsync(filteredPagedProduct, filterPagedDto.PageSize, filterPagedDto.PageNumber);
         }
 
         public async Task<AdminProductsDto?> GetProductsById(GetProductDto get)
